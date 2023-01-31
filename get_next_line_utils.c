@@ -6,7 +6,7 @@
 /*   By: jinsyang <jinsyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:49:12 by jinsyang          #+#    #+#             */
-/*   Updated: 2023/01/31 17:10:21 by jinsyang         ###   ########.fr       */
+/*   Updated: 2023/01/31 17:49:34 by jinsyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ char	*gnl_strjoin(char *tmp, char *buf, int index, int result_len)
 	return (result);
 }
 
-void	gnl_lstfree(t_stay **lst)
+void	gnl_lstfree(t_stay **stay)
 {
 	t_stay	*tmp;
 	t_stay	*next;
 
-	tmp = *lst;
+	tmp = *stay;
 	while (tmp != NULL)
 	{
 		next = tmp->next;
@@ -77,7 +77,8 @@ void	gnl_lstfree(t_stay **lst)
 		free(tmp);
 		tmp = next;
 	}
-	*lst = NULL;
+	free(stay);
+	*stay = NULL;
 }
 
 void	gnl_lstadd_back(t_stay **stay, int fd, char *buf, int fd_index)
@@ -104,18 +105,27 @@ void	gnl_lstadd_back(t_stay **stay, int fd, char *buf, int fd_index)
 		tmp->next = new;
 }
 
-char	*gnl_del_cpy(t_stay **stay, int fd)
+void	gnl_del_cpy(t_stay **stay, int fd, char *buf)
 {
 	t_stay *tmp;
-	char	*result;
+	t_stay *pre;
+	int i;
 
 	tmp = *stay;
+	pre = NULL;
+	i = 0;
 	if (tmp)
 		while (tmp->fd != fd)
+		{
+			pre = tmp;
 			tmp = tmp->next;
-
-
-
-	return(result);
+		}
+	while (tmp->str)
+	{
+		buf[i] = tmp->str[i];
+		i++;
+	}
+	pre->next = tmp->next;
+	free(tmp->str);
+	free(tmp);
 }
-해당위치 지우고 복사하기

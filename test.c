@@ -12,11 +12,15 @@ int main()
 {
 	int fd1 = open("test.txt", O_RDONLY);
 	char *buf;
+	int i = 0;
 
-	buf = get_next_line(fd1);
-	printf("%s",buf);
-	free(buf);
-	buf = NULL;
+	while (i < 2)
+	{
+		buf = get_next_line(fd1);
+		printf("%s",buf);
+		free(buf);
+		buf = NULL;
+	}
 	close(fd1);
 //	atexit(check_leak);
 }

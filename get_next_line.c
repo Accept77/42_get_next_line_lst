@@ -6,7 +6,7 @@
 /*   By: jinsyang <jinsyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:48:07 by jinsyang          #+#    #+#             */
-/*   Updated: 2023/01/31 15:57:11 by jinsyang         ###   ########.fr       */
+/*   Updated: 2023/01/31 17:49:36 by jinsyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,26 @@ char	*get_next_line(int fd)
 	int flag = 1;
 	char	*tmp;
 	int	result_len = 0;
-	t_stay *stay_tmp;
 
 	if (!stay)
 		stay = (t_stay *)malloc(sizeof(t_stay));
 	else if (stay)
 	{
-		stay_tmp = stay;
-
+		gnl_del_cpy(&stay,fd,buf);
+		flag = 2;
 	}
-		fd cheak reulst cpy stay del stay;
-
+//		fd cheak reulst cpy stay del stay;
+//		buf? result?;
+//		result = BUFFER_SIZE big think;
+//		buf = cheak buf cpy flag?;
+//
+//	result read해서 한번에 저장한다음 n찾고 나머지 stay저장하기;
+//	아니면 buf에다가 stay 복사 해서 buf에서 n찾기;
 	while (flag)
 	{
-		fd_index = read(fd,buf,BUFFER_SIZE);
+		if (flag != 2)
+			fd_index = read(fd,buf,BUFFER_SIZE);
+		flag = 1;
 		if (fd_index < 0)
 		{
 			if (result)
@@ -68,14 +74,11 @@ char	*get_next_line(int fd)
 		tmp = NULL;
 	}
 
-	!!lst save str fd;
-	stay_tmp = stay;
-	while (stay_tmp->next == NULL)
-		stay_tmp = stay_tmp->next;
-	stay->str = gnl_strdup(buf+index, fd_index);
-	stay->fd = fd;
+//	!!lst save str fd;
+
+	gnl_lstadd_back(&stay, fd, buf, fd_index);
 	if(!result)
-		free(stay);
+		gnl_lstfree(&stay);
 
 	return (result);
 }
