@@ -6,7 +6,7 @@
 /*   By: jinsyang <jinsyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:49:12 by jinsyang          #+#    #+#             */
-/*   Updated: 2023/01/31 17:49:34 by jinsyang         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:55:58 by jinsyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,7 @@ void	gnl_lstadd_back(t_stay **stay, int fd, char *buf, int fd_index)
 	if (tmp)
 		while (tmp->next != NULL)
 			tmp = tmp->next;
-	if (*stay == NULL)
-	{
-		new->next = *stay;
-		*stay = new;
-	}
-	else
-		tmp->next = new;
+	tmp->next = new;
 }
 
 void	gnl_del_cpy(t_stay **stay, int fd, char *buf)

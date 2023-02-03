@@ -6,7 +6,7 @@
 /*   By: jinsyang <jinsyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:48:07 by jinsyang          #+#    #+#             */
-/*   Updated: 2023/01/31 17:49:36 by jinsyang         ###   ########.fr       */
+/*   Updated: 2023/02/03 14:42:01 by jinsyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_next_line(int fd)
 		stay = (t_stay *)malloc(sizeof(t_stay));
 	else if (stay)
 	{
-		gnl_del_cpy(&stay,fd,buf);
+		gnl_del_cpy(&stay,fd,buf); // 여기
 		flag = 2;
 	}
 //		fd cheak reulst cpy stay del stay;
@@ -72,13 +72,13 @@ char	*get_next_line(int fd)
 			result = gnl_strjoin(tmp, buf, index, result_len);
 		free(tmp);
 		tmp = NULL;
+		if (!result)
+			free(stay);
 	}
 
 //	!!lst save str fd;
 
-	gnl_lstadd_back(&stay, fd, buf, fd_index);
-	if(!result)
-		gnl_lstfree(&stay);
+gnl_lstadd_back(&stay, fd, buf, fd_index); // 여기
 
 	return (result);
 }
