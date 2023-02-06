@@ -14,12 +14,13 @@ int main()
 	char *buf;
 	int i = 0;
 
-	while (i < 2)
+	while (i < 6)
 	{
 		buf = get_next_line(fd1);
 		printf("%s",buf);
 		free(buf);
 		buf = NULL;
+		i++;
 	}
 	close(fd1);
 //	atexit(check_leak);
