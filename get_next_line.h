@@ -6,7 +6,7 @@
 /*   By: jinsyang <jinsyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:49:22 by jinsyang          #+#    #+#             */
-/*   Updated: 2023/01/31 17:49:04 by jinsyang         ###   ########.fr       */
+/*   Updated: 2023/02/08 18:09:13 by jinsyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,20 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 4096
+#  define BUFFER_SIZE 1
 # endif
 
-typedef struct s_stay {
+typedef struct s_list {
 	char *str;
 	int	fd;
-	struct s_stay *next;
-}	t_stay;
+	struct s_list *next;
+}	t_list;
 
 char	*get_next_line(int fd);
 char	*gnl_strdup(char *s1, int index);
 char	*gnl_strjoin(char *tmp, char *buf, int index, int result_len);
-void	gnl_del_cpy(t_stay **stay, int fd, char *buf);
-void	gnl_lstadd_back(t_stay **stay, int fd, char *buf, int fd_index);
-void	gnl_lstfree(t_stay **stay);
+void	new_node(t_list *head, char *buf, int index, int fd);
+void	free_all(t_list *head);
+int		cpy_buf(char *buf, int fd, t_list *head);
+
 #endif
