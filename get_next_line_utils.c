@@ -6,12 +6,11 @@
 /*   By: jinsyang <jinsyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:49:12 by jinsyang          #+#    #+#             */
-/*   Updated: 2023/02/08 18:27:57 by jinsyang         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:55:59 by jinsyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 char	*gnl_strdup(char *s1, int index)
 {
@@ -66,71 +65,43 @@ char	*gnl_strjoin(char *tmp, char *buf, int index, int result_len)
 	return (result);
 }
 
-void new_node(t_list *head, char *buf, int index, int fd)
+char	*result_is(char *result, int *result_len, char *buf, int index)
 {
-	t_list *new;
-	t_list *tmp;
+	char	*tmp;
 
-	new = (t_list *)malloc(sizeof(t_list));
-	tmp = head;
-	if (!new)
-		return ;
-	new->str = gnl_strdup(buf, index);
-	if (!new->str)
-	{
-		free(new);
-		return ;
-	}
-	new->fd = fd;
-	new->next = NULL;
-
-	while (tmp->next != NULL)
-		tmp = tmp->next;
-	tmp->next = new;
+	tmp = gnl_strdup(result, *result_len);
+	free(result);
+	result = NULL;
+	if (tmp == NULL)
+		result = gnl_strdup(buf, index);
+	else
+		result = gnl_strjoin(tmp, buf, index, *result_len);
+	free(tmp);
+	tmp = NULL;
+	*result_len += index;
+	return (result);
 }
 
-void free_all(t_list *head)
+int	where_n(char *buf, int fd_index, int *flag)
 {
-	t_list *tmp;
-	t_list *next;
-
-	tmp = head;
-	while (tmp->next != NULL)
-	{
-		next = next->next;
-		free(tmp->str);
-		tmp->str = NULL;
-		free(tmp);
-		tmp = NULL;
-		tmp = next;
-	}
-	free(head);
-	head = NULL;
-}
-
-int cpy_buf(char *buf, int fd, t_list *head)
-{
-	t_list *pre;
 	int	index;
 
 	index = 0;
-	while (head->fd != fd && head->next != NULL)
+	while (index < fd_index)
 	{
-		pre = head;
-		head = head->next;
-	}
-	if (head->fd != fd && head->next == NULL)
-		return 0;
-	pre->next = head->next;
-
-	while (head->str[index])
-	{
-		buf[index] = head->str[index];
+		if (buf[index] == '\n')
+		{
+			*flag = 0;
+			index++;
+			break ;
+		}
 		index++;
 	}
-	free(head->str);
-	head->str = NULL;
-	free(head);
-	head = NULL;
-	return(index);
+	return (index);
+}
+
+void	set_stay(t_top *stay)
+{
+	stay = (t_top *)malloc(sizeof(t_top));
+	stay->next = NULL;
 }
